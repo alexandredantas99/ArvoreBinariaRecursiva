@@ -1,0 +1,47 @@
+CREATE TABLE IF NOT EXISTS `teste`.`Requerente` (
+  `requerente_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`requerente_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+
+CREATE TABLE IF NOT EXISTS `teste`.`Livro` (
+  `livro_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `Requerente_idRequerente` INT(10) UNSIGNED NOT NULL,
+  `nome` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`livro_id`, `Requerente_idRequerente`),
+  INDEX `fk_Livro_Requerente_idx` (`Requerente_idRequerente` ASC),
+  CONSTRAINT `fk_Livro_Requerente`
+    FOREIGN KEY (`Requerente_idRequerente`)
+    REFERENCES `teste`.`Requerente` (`requerente_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+
+CREATE TABLE IF NOT EXISTS `teste`.`Autor` (
+  `autor_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`autor_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+
+CREATE TABLE IF NOT EXISTS `teste`.`Livro_has_Autor` (
+  `Livro_livro_id` INT(10) UNSIGNED NOT NULL,
+  `Livro_Requerente_idRequerente` INT(10) UNSIGNED NOT NULL,
+  `Autor_autor_id` INT(10) UNSIGNED NOT NULL,
+  PRIMARY KEY (`Livro_livro_id`, `Livro_Requerente_idRequerente`, `Autor_autor_id`),
+  INDEX `fk_Livro_has_Autor_Autor1_idx` (`Autor_autor_id` ASC),
+  INDEX `fk_Livro_has_Autor_Livro1_idx` (`Livro_livro_id` ASC, `Livro_Requerente_idRequerente` ASC),
+  CONSTRAINT `fk_Livro_has_Autor_Livro1`
+    FOREIGN KEY (`Livro_livro_id` , `Livro_Requerente_idRequerente`)
+    REFERENCES `teste`.`Livro` (`livro_id` , `Requerente_idRequerente`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Livro_has_Autor_Autor1`
+    FOREIGN KEY (`Autor_autor_id`)
+    REFERENCES `teste`.`Autor` (`autor_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
